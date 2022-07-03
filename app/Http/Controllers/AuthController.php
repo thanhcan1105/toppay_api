@@ -151,4 +151,21 @@ class AuthController extends Controller
     {
         return $this->responseOK(auth()->user());
     }
+
+    public function updateInfo(Request $request, $id){
+        $validator = \Validator::make($request->all(), [
+            'bank_name' => 'required',
+            'bank_number' => 'required',
+            'momo' => 'required',
+            'zalopay' => 'required',
+        ]);
+
+        $info = User::where('id', $id)->update(array_merge($validator->validated()));
+
+        if ($info) {
+            return $this->responseOK($info);
+        } else {
+            return $this->responseError();
+        }
+    }
 }
